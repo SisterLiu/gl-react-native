@@ -3,6 +3,7 @@ package com.projectseptember.RNGL;
 import android.util.Log;
 
 import static android.opengl.GLES20.*;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -58,6 +59,12 @@ public class RNGLContext extends ReactContextBaseJavaModule {
             throw new Error("removeShader("+id+"): shader does not exist");
         }
     }
+
+    @ReactMethod
+    public void onScene(int sceneIndex){
+        GLCanvas.onScene(sceneIndex,getCurrentActivity());
+    }
+
 
     public void shaderFailedToCompile(Integer id, GLShaderCompilationFailed e) {
         Callback onCompile = onCompileCallbacks.get(id);

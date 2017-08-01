@@ -1,5 +1,6 @@
 package com.projectseptember.RNGL;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
 
 import com.facebook.imagepipeline.core.DefaultExecutorSupplier;
@@ -27,6 +28,11 @@ public class GLCanvasManager extends SimpleViewManager<GLCanvas> {
 
     private ExecutorSupplier executorSupplier;
 
+    @ReactProp(name="scene")
+    public void setScene (GLCanvas view, int scene) {
+        view.setSceneIndex(scene);
+    }
+
     @ReactProp(name="pixelRatio")
     public void setPixelRatio (GLCanvas view, float pixelRatio) {
         view.setPixelRatio(pixelRatio);
@@ -50,16 +56,6 @@ public class GLCanvasManager extends SimpleViewManager<GLCanvas> {
     @ReactProp(name = "overlay")
     public void setZOrderMediaOverlay(GLCanvas view, boolean overlay) {
         view.setZOrderMediaOverlay(overlay);
-    }
-
-    @ReactProp(name = "setZOrderOnTop")
-    public void setZOrderOnTop (GLCanvas view, boolean setZOrderOnTop) {
-        view.setZOrderOnTop(setZOrderOnTop);
-    }
-
-    @ReactProp(name = "backgroundColor")
-    public void setBackgroundColor (GLCanvas view, Integer color) {
-        view.setBackgroundColor(color);
     }
 
     @ReactProp(name = "pointerEvents")

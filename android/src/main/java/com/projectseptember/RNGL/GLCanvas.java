@@ -2,6 +2,7 @@ package com.projectseptember.RNGL;
 
 import static android.opengl.GLES20.*;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -49,6 +50,8 @@ import javax.microedition.khronos.opengles.GL10;
 public class GLCanvas extends GLSurfaceView
         implements GLSurfaceView.Renderer, Executor, ReactPointerEventsView {
 
+    public static ArrayList<GLCanvas> allViews= new ArrayList<>();
+
     private ReactContext reactContext;
     private RNGLContext rnglContext;
     private boolean dirtyOnLoad = true;
@@ -77,6 +80,9 @@ public class GLCanvas extends GLSurfaceView
 
     private float displayDensity;
 
+    private boolean isShowView;
+    public int sceneIndex;
+
     public GLCanvas(ThemedReactContext context, ExecutorSupplier executorSupplier) {
         super(context);
         reactContext = context;
@@ -89,11 +95,54 @@ public class GLCanvas extends GLSurfaceView
         pixelRatio = dm.density;
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        getHolder().setFormat(PixelFormat.RGB_888);
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
         setZOrderOnTop(false);
+        setZOrderMediaOverlay(true);
 
         setRenderer(this);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+        isShowView = true;
+        allViews.add(this);
+    }
+
+    public void setSceneIndex(int sceneIndex){
+        this.sceneIndex=sceneIndex;
+    }
+
+    public void showView(Activity activity){
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                if(isShowView==true)return;
+                setVisibility(View.VISIBLE);
+                isShowView=true;
+            }
+        });
+    }
+    public void unshowView(Activity activity){
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                if(isShowView==false)return;
+                setVisibility(View.INVISIBLE);
+                isShowView=false;
+            }
+        });
+    }
+
+    public static void onScene(int sceneIndex, Activity activity){
+        try {
+            Thread.sleep(500);
+        }catch(Exception e){
+            Log.e("GLCanvas",e.toString());
+        }
+        for(GLCanvas glc:allViews){
+            if(glc!=null){
+                if(glc.sceneIndex==sceneIndex)
+                    glc.showView(activity);
+                else
+                    glc.unshowView(activity);
+            }
+        }
     }
 
     @Override
