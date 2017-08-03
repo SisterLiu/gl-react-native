@@ -59,6 +59,12 @@ public class RNGLContext extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void onScene(int sceneIndex){
+        GLCanvas.onScene(sceneIndex,getCurrentActivity());
+    }
+
+
     public void shaderFailedToCompile(Integer id, GLShaderCompilationFailed e) {
         Callback onCompile = onCompileCallbacks.get(id);
         if (onCompile == null) {

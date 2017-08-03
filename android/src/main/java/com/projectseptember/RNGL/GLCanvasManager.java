@@ -1,5 +1,6 @@
 package com.projectseptember.RNGL;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
 
 import com.facebook.imagepipeline.core.DefaultExecutorSupplier;
@@ -26,6 +27,11 @@ public class GLCanvasManager extends SimpleViewManager<GLCanvas> {
     public static final int COMMAND_CAPTURE_FRAME = 1;
 
     private ExecutorSupplier executorSupplier;
+
+    @ReactProp(name="scene")
+    public void setScene (GLCanvas view, int scene) {
+        view.setSceneIndex(scene);
+    }
 
     @ReactProp(name="pixelRatio")
     public void setPixelRatio (GLCanvas view, float pixelRatio) {
